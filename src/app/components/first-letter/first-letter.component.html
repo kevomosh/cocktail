@@ -1,0 +1,14 @@
+<ng-select [items]="alphabet" (change)="onChange($event)" autofocus>
+</ng-select>
+
+<ng-container *ngIf="allCocktail$ | async as cocktails">
+  <ng-container *ngIf="cocktails.length > 0">
+    <ng-select
+      [items]="cocktails"
+      bindLabel="name"
+      (change)="zChange($event)"
+      autofocus
+    >
+    </ng-select>
+  </ng-container>
+</ng-container>
