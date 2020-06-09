@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HelperService } from 'src/app/services/helper.service';
-import { MainService } from 'src/app/services/main.service';
+import { RandomCocktailComponent } from '../random-cocktail/random-cocktail.component';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +10,13 @@ import { MainService } from 'src/app/services/main.service';
 })
 export class HomeComponent implements OnInit {
   constructor(
-    private mainService: MainService,
+    private modalService: NgbModal,
     public helperService: HelperService
   ) {}
 
   ngOnInit(): void {}
+
+  open() {
+    this.modalService.open(RandomCocktailComponent, { size: 'xl' });
+  }
 }

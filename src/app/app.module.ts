@@ -8,6 +8,7 @@ import { FirstLetterComponent } from './components/first-letter/first-letter.com
 import { HomeComponent } from './components/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
 import { SharedModule } from './shared/shared.module';
+import { RandomCocktailComponent } from './components/random-cocktail/random-cocktail.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { SharedModule } from './shared/shared.module';
     HomeComponent,
     DisplayComponent,
     NavComponent,
+    RandomCocktailComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, SharedModule],
   providers: [],
