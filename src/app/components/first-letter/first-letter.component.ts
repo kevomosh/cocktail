@@ -19,18 +19,20 @@ export class FirstLetterComponent implements OnInit, OnDestroy {
   selectedCocktails: DrinkInfo[] = [];
   private _allCocktail$ = new BehaviorSubject<DrinkInfo[]>([]);
 
-  selectedLetter = null;
-
   alphabet = [...Array(26).keys()].map((i) => String.fromCharCode(i + 97));
   private destroy: Subject<void> = new Subject<void>();
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.helperService.startFirstInputWarning();
+  }
 
   zChange(event: any) {
     if (event) {
+      this.helperService.clearSecondInputWarning();
       this.helperService.setCocktailId$(event.id);
     } else {
       this.helperService.clearCocktailId();
+      this.helperService.startSecondInputWarning();
     }
   }
 
@@ -42,9 +44,11 @@ export class FirstLetterComponent implements OnInit, OnDestroy {
         .getAllCocktailsByFirstLetter(event)
         .pipe(takeUntil(this.destroy))
         .subscribe((x) => {
+          this.helperService.finishFirstStartSecondWarning();
           this._allCocktail$.next(x);
         });
     } else {
+      this.helperService.finishSecondStartFirstWarning();
       this._allCocktail$.next([]);
     }
   }

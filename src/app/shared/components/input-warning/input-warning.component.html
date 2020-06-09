@@ -1,0 +1,17 @@
+<ng-container *ngIf="combined$ | async as combined">
+  <div class="row mt-3">
+    <div class="col-sm-12 col-md-8 mx-auto text-center">
+      <ng-container *ngIf="combined.firstWarning">
+        <ngb-alert [type]="'primary'" [dismissible]="false">
+          {{ firstWarningMessage }}
+        </ngb-alert>
+      </ng-container>
+
+      <ng-container *ngIf="combined.secondWarning">
+        <ngb-alert [type]="'info'" [dismissible]="false">
+          {{ secondWarningMessage }}
+        </ngb-alert>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

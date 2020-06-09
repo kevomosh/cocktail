@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-12 col-md-10 mx-auto">
-      <div class="card my-3 shadow-lg p-3 bg-white rounded">
+    <div class="col-sm-12 col-md-8 mx-auto">
+      <div class="card shadow-lg p-3 bg-white rounded">
         <ng-select
           [items]="allIngredients$ | async"
           bindLabel="ingredient"
@@ -22,11 +22,17 @@
             <h4>{{ ingredient.name }}</h4>
           </div>
           <h5>Abv</h5>
-          <p>{{ ingredient.abv }}</p>
+          <p>{{ ingredient.abv | noValue }}</p>
           <h5>Description</h5>
-          <p>{{ ingredient.description }}</p>
+          <p>{{ ingredient.description | noValue }}</p>
         </div>
       </div>
     </div>
   </ng-container>
+
+  <app-input-warning
+    [firstWarningMessage]="
+      'Select one Ingredient from the menu to view more information about it'
+    "
+  ></app-input-warning>
 </div>
