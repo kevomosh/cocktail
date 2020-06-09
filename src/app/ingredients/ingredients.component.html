@@ -1,3 +1,32 @@
 <div class="container">
-  <p>ingredients works!</p>
+  <div class="row">
+    <div class="col-sm-12 col-md-10 mx-auto">
+      <div class="card my-3 shadow-lg p-3 bg-white rounded">
+        <ng-select
+          [items]="allIngredients$ | async"
+          bindLabel="ingredient"
+          (change)="onChange($event)"
+          placeholder="Select one Ingredient from dropdown"
+          autofocus
+        >
+        </ng-select>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="ingSubject | async as ingredient">
+    <div class="row">
+      <div class="col-sm-12 col-md-10 mx-auto">
+        <div class="card my-3 shadow-lg p-3 bg-white rounded">
+          <div class="card-body text-center">
+            <h4>{{ ingredient.name }}</h4>
+          </div>
+          <h5>Abv</h5>
+          <p>{{ ingredient.abv }}</p>
+          <h5>Description</h5>
+          <p>{{ ingredient.description }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>

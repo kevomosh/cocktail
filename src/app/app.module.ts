@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CocktailCardComponent } from './components/cocktail-card/cocktail-card.component';
 import { DisplayComponent } from './components/display/display.component';
 import { FirstLetterComponent } from './components/first-letter/first-letter.component';
 import { HomeComponent } from './components/home/home.component';
@@ -16,7 +15,6 @@ import { SharedModule } from './shared/shared.module';
     FirstLetterComponent,
     HomeComponent,
     DisplayComponent,
-    CocktailCardComponent,
     NavComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, SharedModule],
