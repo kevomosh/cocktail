@@ -10,12 +10,10 @@ export class HelperService {
   constructor() {}
 
   setCocktailId$(newId: number) {
-    console.log('Setting id to ', newId);
     this._cocktailId$.next(newId);
   }
 
   clearCocktailId() {
-    console.log('clearing id');
     this._cocktailId$.next(0);
   }
 

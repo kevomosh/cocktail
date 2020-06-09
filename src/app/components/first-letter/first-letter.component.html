@@ -1,14 +1,31 @@
-<ng-select [items]="alphabet" (change)="onChange($event)" autofocus>
-</ng-select>
+<div class="container">
+  <div class="card">
+    <h4 class="card-header card-title text-center">
+      Begin search
+    </h4>
+    <div class="card-body">
+      <ng-select
+        [items]="alphabet"
+        (change)="onChange($event)"
+        autofocus
+        placeholder="Enter first letter"
+      >
+      </ng-select>
 
-<ng-container *ngIf="allCocktail$ | async as cocktails">
-  <ng-container *ngIf="cocktails.length > 0">
-    <ng-select
-      [items]="cocktails"
-      bindLabel="name"
-      (change)="zChange($event)"
-      autofocus
-    >
-    </ng-select>
-  </ng-container>
-</ng-container>
+      <div class="mt-3">
+        <ng-container *ngIf="allCocktail$ | async as cocktails">
+          <ng-container *ngIf="cocktails.length > 0">
+            <ng-select
+              [items]="cocktails"
+              bindLabel="name"
+              (change)="zChange($event)"
+              placeholder="Select one cocktail from dropdown"
+              autofocus
+            >
+            </ng-select>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
