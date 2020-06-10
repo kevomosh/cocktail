@@ -1,8 +1,0 @@
-<div class="container mt-4">
-  <ng-container *ngIf="chosenCocktail$ | async as cocktail">
-    <div class="card shadow-lg">
-      <h4 class="card-header card-title text-center">{{ cocktail.name }}</h4>
-      <app-cocktail-info [cocktail]="cocktail"></app-cocktail-info>
-    </div>
-  </ng-container>
-</div>

@@ -5,23 +5,10 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class HelperService {
-  private _cocktailId$ = new BehaviorSubject<number>(0);
   private _firstInputWarning = new BehaviorSubject<boolean>(false);
   private _secondInputWarning = new BehaviorSubject<boolean>(false);
 
   constructor() {}
-
-  setCocktailId$(newId: number) {
-    this._cocktailId$.next(newId);
-  }
-
-  clearCocktailId() {
-    this._cocktailId$.next(0);
-  }
-
-  get cocktailId$() {
-    return this._cocktailId$.asObservable();
-  }
 
   clearFirstInputWarning() {
     this._firstInputWarning.next(false);

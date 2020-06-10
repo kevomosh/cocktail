@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { DrinkInfo } from '../views/drinkInfo';
 import { IngredientInfo } from '../views/ingredientInfo';
 import { HelperService } from './helper.service';
 import { MainService } from './main.service';
+import { ShowCocktailService } from './show-cocktail.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,24 +12,25 @@ import { MainService } from './main.service';
 export class IngredientService {
   constructor(
     private helperService: HelperService,
-    private mainService: MainService
+    private mainService: MainService,
+    private cocktailService: ShowCocktailService
   ) {}
   private _ingredientDetails$ = new BehaviorSubject<IngredientInfo>({});
   private _showIngredientDetails$ = new BehaviorSubject<boolean>(false);
-  private _drinksList$ = new BehaviorSubject<DrinkInfo[]>([]);
-  private _showDrinksList$ = new BehaviorSubject<boolean>(false);
   private _ingredientName$ = new BehaviorSubject<string>('');
   private destroy: Subject<void> = new Subject<void>();
 
+  resetAll() {}
+
   showSelectForDrinkList() {
-    this._showDrinksList$.next(true);
+    this.cocktailService.setshowDrinksList(true);
     this.ingredientName$
       .pipe(
         switchMap((name) => this.mainService.getAllByIngredient(name)),
         takeUntil(this.destroy)
       )
       .subscribe((payload) => {
-        this._drinksList$.next(payload);
+        this.cocktailService.setDrinksList(payload);
       });
   }
 
@@ -40,37 +41,30 @@ export class IngredientService {
         takeUntil(this.destroy)
       )
       .subscribe((payload) => {
-        this._showIngredientDetails$.next(true);
-        this._showDrinksList$.next(false);
+        this.setShowIngredientsDetails(true);
+        this.cocktailService.setshowDrinksList(false);
         this.helperService.clearSecondInputWarning();
-        this._ingredientDetails$.next(payload);
+        this.setIngredientDetails(payload);
       });
   }
 
   handleOnChange(event: any) {
     if (event) {
-      this._ingredientName$.next(event.ingredient);
+      this.setIngredientName(event.ingredient);
       this.helperService.finishFirstStartSecondWarning();
     } else {
       this.helperService.finishSecondStartFirstWarning();
-      this._showDrinksList$.next(false);
-      this._ingredientName$.next('');
-      this._showIngredientDetails$.next(false);
-      this._ingredientDetails$.next({});
+      this.cocktailService.setshowDrinksList(false);
+      this.setIngredientName('');
+      this.setShowIngredientsDetails(false);
+      this.setIngredientDetails({});
+
       this.destroy.next();
     }
   }
 
   get ingredientName$() {
     return this._ingredientName$.asObservable();
-  }
-
-  get showDrinksList$() {
-    return this._showDrinksList$.asObservable();
-  }
-
-  get drinksList$() {
-    return this._drinksList$.asObservable();
   }
 
   get showIngredientDetails$() {
@@ -81,6 +75,17 @@ export class IngredientService {
     return this._ingredientDetails$.asObservable();
   }
 
+  setIngredientName(name: string) {
+    this._ingredientName$.next(name);
+  }
+
+  setShowIngredientsDetails(value: boolean) {
+    this._showIngredientDetails$.next(value);
+  }
+
+  setIngredientDetails(ingredient: IngredientInfo) {
+    this._ingredientDetails$.next(ingredient);
+  }
   unsubscribeDestroy() {
     this.destroy.unsubscribe();
   }

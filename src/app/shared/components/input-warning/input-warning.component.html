@@ -7,7 +7,7 @@
         </ngb-alert>
       </ng-container>
 
-      <ng-container *ngIf="combined.secondWarning">
+      <ng-container *ngIf="combined.secondWarning && !combined.showCocktail">
         <ngb-alert [type]="'info'" [dismissible]="false">
           {{ secondWarningMessage }}
           <ng-container *ngIf="displayOptions">

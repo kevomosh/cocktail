@@ -3,6 +3,7 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HelperService } from 'src/app/services/helper.service';
 import { IngredientService } from 'src/app/services/ingredient.service';
+import { ShowCocktailService } from 'src/app/services/show-cocktail.service';
 
 @Component({
   selector: 'app-input-warning',
@@ -16,16 +17,19 @@ export class InputWarningComponent implements OnInit, OnDestroy {
 
   constructor(
     private helperService: HelperService,
-    public ingredientService: IngredientService
+    public ingredientService: IngredientService,
+    private cocktailService: ShowCocktailService
   ) {}
 
   combined$ = combineLatest([
     this.helperService.firstInputWarning,
     this.helperService.secondInputWarning,
+    this.cocktailService.showCockTail$,
   ]).pipe(
-    map(([firstWarning, secondWarning]) => ({
+    map(([firstWarning, secondWarning, showCocktail]) => ({
       firstWarning,
       secondWarning,
+      showCocktail,
     }))
   );
 

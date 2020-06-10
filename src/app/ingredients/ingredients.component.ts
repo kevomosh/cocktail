@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { HelperService } from '../services/helper.service';
 import { IngredientService } from '../services/ingredient.service';
 import { MainService } from '../services/main.service';
+import { ShowCocktailService } from '../services/show-cocktail.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -17,7 +18,8 @@ export class IngredientsComponent implements OnInit, OnDestroy {
   constructor(
     private mainService: MainService,
     private helperService: HelperService,
-    private ingredientService: IngredientService
+    private ingredientService: IngredientService,
+    private cocktailService: ShowCocktailService
   ) {}
 
   ngOnInit(): void {
@@ -26,8 +28,8 @@ export class IngredientsComponent implements OnInit, OnDestroy {
 
   private ingredientDetails$ = this.ingredientService.ingredientDetails$;
   private showDetails$ = this.ingredientService.showIngredientDetails$;
-  private drinksList$ = this.ingredientService.drinksList$;
-  private showDrinksList$ = this.ingredientService.showDrinksList$;
+  private drinksList$ = this.cocktailService.drinksList$;
+  private showDrinksList$ = this.cocktailService.showDrinksList$;
   private allIngredients$ = this.mainService.listOfIngredients();
 
   stream$ = combineLatest([
@@ -59,6 +61,6 @@ export class IngredientsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.ingredientService.unsubscribeDestroy();
+    this.cocktailService.resetAll();
   }
 }

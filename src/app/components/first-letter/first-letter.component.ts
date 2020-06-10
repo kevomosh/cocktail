@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HelperService } from 'src/app/services/helper.service';
 import { MainService } from 'src/app/services/main.service';
+import { ShowCocktailService } from 'src/app/services/show-cocktail.service';
 import { DrinkInfo } from 'src/app/views/drinkInfo';
 
 @Component({
@@ -13,10 +14,11 @@ import { DrinkInfo } from 'src/app/views/drinkInfo';
 export class FirstLetterComponent implements OnInit, OnDestroy {
   constructor(
     private mainService: MainService,
-    public helperService: HelperService
+    public helperService: HelperService,
+    private cocktailService: ShowCocktailService
   ) {}
 
-  selectedCocktails: DrinkInfo[] = [];
+  selectedCocktail: DrinkInfo[] = [];
   private _allCocktail$ = new BehaviorSubject<DrinkInfo[]>([]);
 
   alphabet = [...Array(26).keys()].map((i) => String.fromCharCode(i + 97));
@@ -29,16 +31,19 @@ export class FirstLetterComponent implements OnInit, OnDestroy {
   zChange(event: any) {
     if (event) {
       this.helperService.clearSecondInputWarning();
-      this.helperService.setCocktailId$(event.id);
+      this.cocktailService.setCockTailId(event.id);
+      this.cocktailService.setShowCockTail(true);
+      //this.helperService.setCocktailId$(event.id);
     } else {
-      this.helperService.clearCocktailId();
+      this.cocktailService.clearIdAndShow();
+      // this.helperService.clearCocktailId();
       this.helperService.startSecondInputWarning();
     }
   }
 
   onChange(event: any) {
-    this.helperService.clearCocktailId();
-
+    // this.cocktailService.setCockTailId(0);
+    // this.helperService.clearCocktailId();
     if (event) {
       this.mainService
         .getAllCocktailsByFirstLetter(event)
@@ -48,6 +53,8 @@ export class FirstLetterComponent implements OnInit, OnDestroy {
           this._allCocktail$.next(x);
         });
     } else {
+      this.cocktailService.setShowCockTail(false);
+
       this.helperService.finishSecondStartFirstWarning();
       this._allCocktail$.next([]);
     }
@@ -59,7 +66,8 @@ export class FirstLetterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this._allCocktail$.next([]);
-    this.helperService.clearCocktailId();
+    this.cocktailService.clearIdAndShow();
+    //this.helperService.clearCocktailId();
 
     this.destroy.next();
     this.destroy.unsubscribe();
