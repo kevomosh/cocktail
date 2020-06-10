@@ -14,6 +14,22 @@
     </div>
   </div>
 
+  <ng-container *ngIf="showDrinksList$ | async">
+    <div class="row">
+      <div class="col-sm-12 col-md-8 mx-auto">
+        <div class="card shadow-lg p-3 bg-white rounded">
+          <ng-select
+            [items]="drinksList$ | async"
+            bindLabel="name"
+            placeholder="Select one cocktail from dropdown"
+            autofocus
+          >
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
   <ng-container *ngIf="ingSubject | async as ingredient">
     <div class="row">
       <div class="col-sm-12 col-md-10 mx-auto">
@@ -31,6 +47,9 @@
   </ng-container>
 
   <app-input-warning
+    (showDrinkList)="showListForIngredient()"
+    (showIngredient)="showDetails()"
+    [displayOptions]="true"
     [firstWarningMessage]="
       'Select one Ingredient from the menu to view more information about it'
     "

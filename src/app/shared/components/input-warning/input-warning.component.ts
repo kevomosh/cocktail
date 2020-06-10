@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HelperService } from 'src/app/services/helper.service';
@@ -11,6 +18,10 @@ import { HelperService } from 'src/app/services/helper.service';
 export class InputWarningComponent implements OnInit, OnDestroy {
   @Input() firstWarningMessage: string;
   @Input() secondWarningMessage: string;
+  @Input() displayOptions: boolean;
+  @Output() showIngredient = new EventEmitter<any>();
+  @Output() showDrinkList = new EventEmitter<any>();
+
   constructor(private helperService: HelperService) {}
 
   combined$ = combineLatest([
@@ -24,6 +35,14 @@ export class InputWarningComponent implements OnInit, OnDestroy {
   );
 
   ngOnInit(): void {}
+
+  displayIngredient() {
+    this.showIngredient.emit();
+  }
+
+  displayDrinklist() {
+    this.showDrinkList.emit();
+  }
 
   ngOnDestroy() {
     this.helperService.clearFirstInputWarning();

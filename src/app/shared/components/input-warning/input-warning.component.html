@@ -10,6 +10,22 @@
       <ng-container *ngIf="combined.secondWarning">
         <ngb-alert [type]="'info'" [dismissible]="false">
           {{ secondWarningMessage }}
+          <ng-container *ngIf="displayOptions">
+            <button
+              class="btn btn-info"
+              type="button"
+              (click)="displayIngredient()"
+            >
+              Display Ingredient
+            </button>
+            <button
+              class="btn btn-info"
+              type="button"
+              (click)="displayDrinklist()"
+            >
+              two
+            </button>
+          </ng-container>
         </ngb-alert>
       </ng-container>
     </div>

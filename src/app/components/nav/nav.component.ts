@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RandomCocktailComponent } from '../random-cocktail/random-cocktail.component';
 
 @Component({
   selector: 'app-nav',
@@ -8,5 +10,9 @@ import { Component } from '@angular/core';
 export class NavComponent {
   isMenuCollapsed = true;
 
-  constructor() {}
+  constructor(private modalService: NgbModal) {}
+
+  open() {
+    this.modalService.open(RandomCocktailComponent, { size: 'xl' });
+  }
 }
