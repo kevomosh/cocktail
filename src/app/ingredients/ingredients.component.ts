@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HelperService } from '../services/helper.service';
+import { IngredientService } from '../services/ingredient.service';
 import { MainService } from '../services/main.service';
-import { DrinkInfo } from '../views/drinkInfo';
-import { IngredientInfo } from '../views/ingredientInfo';
 
 @Component({
   selector: 'app-ingredients',
@@ -14,61 +13,52 @@ import { IngredientInfo } from '../views/ingredientInfo';
 })
 export class IngredientsComponent implements OnInit, OnDestroy {
   @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+
   constructor(
     private mainService: MainService,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private ingredientService: IngredientService
   ) {}
-  ingSubject = new Subject<IngredientInfo>();
-  drinksList$ = new BehaviorSubject<DrinkInfo[]>([]);
-  showDrinksList$ = new BehaviorSubject<boolean>(false);
-  private ingredientName$ = new BehaviorSubject<string>('');
-  private destroy: Subject<void> = new Subject<void>();
-  private destroy1: Subject<void> = new Subject<void>();
 
-  allIngredients$ = this.mainService.listOfIngredients();
   ngOnInit(): void {
     this.helperService.startFirstInputWarning();
   }
 
-  showDetails() {
-    this.ingredientName$
-      .pipe(
-        switchMap((name) => this.mainService.searchIngredientByName(name)),
-        takeUntil(this.destroy)
-      )
-      .subscribe((x) => {
-        this.showDrinksList$.next(false);
-        this.helperService.clearSecondInputWarning();
-        this.ingSubject.next(x);
-      });
-  }
+  private ingredientDetails$ = this.ingredientService.ingredientDetails$;
+  private showDetails$ = this.ingredientService.showIngredientDetails$;
+  private drinksList$ = this.ingredientService.drinksList$;
+  private showDrinksList$ = this.ingredientService.showDrinksList$;
+  private allIngredients$ = this.mainService.listOfIngredients();
 
-  showListForIngredient() {
-    this.showDrinksList$.next(true);
-    this.ingredientName$
-      .pipe(
-        switchMap((name) => this.mainService.getAllByIngredient(name)),
-        takeUntil(this.destroy)
-      )
-      .subscribe((info) => {
-        this.drinksList$.next(info);
-      });
-  }
+  stream$ = combineLatest([
+    this.ingredientDetails$,
+    this.showDetails$,
+    this.drinksList$,
+    this.showDrinksList$,
+    this.allIngredients$,
+  ]).pipe(
+    map(
+      ([
+        ingredientDetails,
+        showDetails,
+        drinksList,
+        showDrinksList,
+        allIngredients,
+      ]) => ({
+        ingredientDetails,
+        showDetails,
+        drinksList,
+        showDrinksList,
+        allIngredients,
+      })
+    )
+  );
 
   onChange(event: any) {
-    if (event) {
-      this.ingredientName$.next(event.ingredient);
-      this.helperService.finishFirstStartSecondWarning();
-    } else {
-      this.showDrinksList$.next(false);
-      this.ingredientName$.next('');
-      this.ingSubject.next();
-      this.destroy.next();
-      this.helperService.finishSecondStartFirstWarning();
-    }
+    this.ingredientService.handleOnChange(event);
   }
 
   ngOnDestroy() {
-    this.destroy.unsubscribe();
+    this.ingredientService.unsubscribeDestroy();
   }
 }

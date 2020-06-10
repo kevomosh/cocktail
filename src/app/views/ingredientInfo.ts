@@ -1,6 +1,6 @@
 export interface IngredientInfo {
-  ingedientId: number;
-  name: string;
-  description: string;
-  abv: number;
+  ingedientId?: number;
+  name?: string;
+  description?: string;
+  abv?: number;
 }
