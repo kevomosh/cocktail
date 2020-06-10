@@ -20,7 +20,12 @@ export class IngredientService {
   private _ingredientName$ = new BehaviorSubject<string>('');
   private destroy: Subject<void> = new Subject<void>();
 
-  resetAll() {}
+  resetAll() {
+    this.setIngredientName('');
+    this.setShowIngredientsDetails(false);
+    this.setIngredientDetails({});
+    this.destroy.next();
+  }
 
   showSelectForDrinkList() {
     this.cocktailService.setshowDrinksList(true);
@@ -55,11 +60,7 @@ export class IngredientService {
     } else {
       this.helperService.finishSecondStartFirstWarning();
       this.cocktailService.setshowDrinksList(false);
-      this.setIngredientName('');
-      this.setShowIngredientsDetails(false);
-      this.setIngredientDetails({});
-
-      this.destroy.next();
+      this.resetAll();
     }
   }
 

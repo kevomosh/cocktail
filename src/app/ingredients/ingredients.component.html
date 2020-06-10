@@ -23,6 +23,7 @@
               [items]="stream.drinksList"
               bindLabel="name"
               placeholder="Select one cocktail from dropdown"
+              (change)="displayCocktail($event)"
               autofocus
             >
             </ng-select>
@@ -53,6 +54,7 @@
       'Select one Ingredient from the menu to view more information about it'
     "
   ></app-input-warning>
+  <app-cocktail-card></app-cocktail-card>
 </ng-container>
 
 <ng-template #loading>

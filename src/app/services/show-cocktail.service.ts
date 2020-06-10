@@ -2,23 +2,30 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DrinkInfo } from '../views/drinkInfo';
 import { HelperService } from './helper.service';
-import { MainService } from './main.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShowCocktailService {
-  constructor(
-    private mainService: MainService,
-    private helperService: HelperService
-  ) {}
+  constructor(private helperService: HelperService) {}
 
   private _showCocktail = new BehaviorSubject<boolean>(false);
   private _cocktailId$ = new BehaviorSubject<number>(0);
   private _drinksList$ = new BehaviorSubject<DrinkInfo[]>([]);
   private _showDrinksList$ = new BehaviorSubject<boolean>(false);
-  // private _chosenCockTail$ = new BehaviorSubject<DrinkInfo>({});
-  // private destroy = new Subject<void>();
+
+  displayCocktailCard(event: any) {
+    if (event) {
+      this.helperService.clearSecondInputWarning();
+      this.setCockTailId(event.id);
+      this.setShowCockTail(true);
+      //this.helperService.setCocktailId$(event.id);
+    } else {
+      this.clearIdAndShow();
+      // this.helperService.clearCocktailId();
+      this.helperService.startSecondInputWarning();
+    }
+  }
 
   get showCockTail$() {
     return this._showCocktail.asObservable();

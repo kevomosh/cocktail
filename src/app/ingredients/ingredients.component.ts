@@ -60,7 +60,13 @@ export class IngredientsComponent implements OnInit, OnDestroy {
     this.ingredientService.handleOnChange(event);
   }
 
+  displayCocktail(event: any) {
+    this.cocktailService.displayCocktailCard(event);
+  }
+
   ngOnDestroy() {
+    this.ingredientService.resetAll();
     this.cocktailService.resetAll();
+    this.cocktailService.clearIdAndShow();
   }
 }

@@ -28,22 +28,11 @@ export class FirstLetterComponent implements OnInit, OnDestroy {
     this.helperService.startFirstInputWarning();
   }
 
-  zChange(event: any) {
-    if (event) {
-      this.helperService.clearSecondInputWarning();
-      this.cocktailService.setCockTailId(event.id);
-      this.cocktailService.setShowCockTail(true);
-      //this.helperService.setCocktailId$(event.id);
-    } else {
-      this.cocktailService.clearIdAndShow();
-      // this.helperService.clearCocktailId();
-      this.helperService.startSecondInputWarning();
-    }
+  displayCocktail(event: any) {
+    this.cocktailService.displayCocktailCard(event);
   }
 
   onChange(event: any) {
-    // this.cocktailService.setCockTailId(0);
-    // this.helperService.clearCocktailId();
     if (event) {
       this.mainService
         .getAllCocktailsByFirstLetter(event)

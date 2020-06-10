@@ -14,7 +14,6 @@ import { SharedModule } from './shared/shared.module';
     AppComponent,
     FirstLetterComponent,
     HomeComponent,
-
     NavComponent,
     RandomCocktailComponent,
   ],
